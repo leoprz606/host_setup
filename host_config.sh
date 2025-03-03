@@ -1,15 +1,25 @@
 #!/bin/bash
 
-# change hostname
-
-# Read file contents into variable
-file_contents=$(cat hostname)
-if echo "$file_contents" | grep -q "clone"; then
-    echo "Write this VMs hostname to the hostname file - exiting"
-    exit 0
+# Check if script is run as root
+if [ "$EUID" -ne 0 ]; then
+    echo "This script must be run as root. Please use sudo."
+    exit 1
 fi
 
-hostnamectl set-hostname $file_contents
+# Prompt user for hostname
+read -p "Enter the new hostname: " new_hostname
+
+# Validate input is not empty
+if [ -z "$new_hostname" ]; then
+    echo "Hostname cannot be empty. Aborting."
+    exit 1
+fi
+
+# Set the hostname
+hostnamectl set-hostname "$new_hostname"
+
+# Add entry to /etc/hosts
+echo "127.0.0.1   $new_hostname" >> /etc/hosts
 
 # INTIAL SSH SETUP
 sed -i 's/#PasswordAuthentication/PasswordAuthentication/g' /etc/ssh/sshd_config
