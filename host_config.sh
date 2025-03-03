@@ -45,17 +45,6 @@ echo 'export KUBECONFIG=/etc/kubernetes/admin.conf' >> /root/.bash_profile
 rm -f /etc/machine-id
 systemd-machine-id-setup
 
-# MAC:
-nmcli con reload
-nmcli con up eth0
-systemctl restart network
-
-# Regenerate SSL Certificates:
-rm -f /etc/pki/tls/certs/*
-rm -f /etc/pki/tls/private/*
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/pki/tls/private/newkey.key -out /etc/pki/tls/certs/newcert.crt
-systemctl restart httpd
-
 # Update SSH Host Keys::
 rm /etc/ssh/ssh_host_*
 ssh-keygen -A
