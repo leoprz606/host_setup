@@ -21,6 +21,15 @@ hostnamectl set-hostname "$new_hostname"
 # Add entry to /etc/hosts
 echo "127.0.0.1   $new_hostname" >> /etc/hosts
 
+
+# Check if "rke2" is in the hostname (case insensitive)
+if echo "$new_hostname" | grep -iq "rke2"; then
+    echo "export KUBECONFIG=/etc/rancher/rke2/rke2.yaml" >> /root/.bash_profile
+
+else
+    echo 'export KUBECONFIG=/etc/kubernetes/admin.conf' >> /root/.bash_profile
+fi
+
 # INTIAL SSH SETUP
 sed -i 's/#PasswordAuthentication/PasswordAuthentication/g' /etc/ssh/sshd_config
 systemctl restart sshd
@@ -47,7 +56,6 @@ pip install ansible
 
 echo 'alias k=kubectl' >> /root/.bash_profile
 echo 'cd /home/k8s/repositories' >> /root/.bash_profile
-echo 'export KUBECONFIG=/etc/kubernetes/admin.conf' >> /root/.bash_profile
 
 # Rest unique identifiers
 
