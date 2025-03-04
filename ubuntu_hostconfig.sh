@@ -43,8 +43,12 @@ chmod 600 /home/k8s/.ssh/authorized_keys
 sed -i 's/#AllowTcpForwarding/AllowTcpForwarding/g' /etc/ssh/sshd_config
 sed -i 's/PasswordAuthentication/#PasswordAuthentication/g' /etc/ssh/sshd_config
 echo 'k8s     ALL=(ALL)       NOPASSWD: ALL' >> /etc/sudoers.d/k8s
+echo 'leo     ALL=(ALL)       NOPASSWD: ALL' >> /etc/sudoers.d/k8s
 chmod 440 /etc/sudoers.d/k8s
 systemctl restart ssh
+
+# change shell to bash
+chsh -s /bin/bash
 
 # LOCAL CONTROLLER PRE ANSIBLE SETUP
 apt update -y
