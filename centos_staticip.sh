@@ -2,7 +2,7 @@
 
 # Default values
 DEFAULT_INTERFACE="eth0"
-DEFAULT_GATEWAY="192.168.1.1"
+DEFAULT_GATEWAY="192.168.86.1"
 DEFAULT_DNS="192.168.86.2 1.1.1.1"
 
 # Function to check if command exists
